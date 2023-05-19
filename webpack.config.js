@@ -1,26 +1,38 @@
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveAppPath = relativePath => path.resolve(appDirectory, relativePath);
+const host = process.env.HOST || 'localhost';
+process.env.NODE_ENV = 'development';
+
 module.exports = {
-  // Where files should be sent once they are bundled
+  mode: 'development',
+  entry: resolveAppPath('src'),
   output: {
     path: path.join(__dirname, '/build'),
     filename: 'index.bundle.js'
   },
-  // webpack 5 comes with devServer which loads in development mode
   devServer: {
     port: 3000,
-    watchContentBase: true
+    compress: true,
+    hot: true,
+    host,
+    open: true,
   },
-  // Rules of how webpack will take our files, complie & bundle them for the browser 
   module: {
     rules: [
       {
         test: /\.(js|jsx|tsx|ts)$/,
         exclude: /nodeModules/,
-        use: {
-          loader: 'babel-loader'
+        include: resolveAppPath('src'),
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            require.resolve('babel-preset-react-app')
+          ]
         }
       },
       {
@@ -33,7 +45,10 @@ module.exports = {
     extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './src/index.html' }), 
+    new HtmlWebpackPlugin({ 
+      inject: true,
+      template: resolveAppPath('./src/index.html')
+    }), 
     new MiniCssExtractPlugin()
   ]
 }
