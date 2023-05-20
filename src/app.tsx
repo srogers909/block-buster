@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
+import TabletopComponent from './components/tabletop/tabletop.component';
 
 function App() {
   return (
-    <div>Something</div>
+    <StrictMode>
+      <TabletopComponent />
+    </StrictMode>
   );
 }
 

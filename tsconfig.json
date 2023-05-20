@@ -10,6 +10,10 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "lib": ["es6", "dom", "dom.iterable", "scripthost"],
+  "typeRoots": ["./node_modules/phaser/types"],
+  "types": ["Phaser"]
 }
